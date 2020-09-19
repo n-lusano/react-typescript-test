@@ -24,7 +24,16 @@ export default function TodoItem(props: Props) {
           checked={props.item.isDone}
           onChange={props.toggleDone}
         />{" "}
-        {props.item.text}
+        {props.item.text} (
+        {props.item.tags.map((tag, i) => {
+          if (props.item.tags[i + 1]) {
+            return <span key={i}>{tag}, </span>;
+          } else {
+            return <span key={i}>{tag}</span>;
+          }
+          return null;
+        })}
+        )
       </label>
     </div>
   );
