@@ -31,7 +31,6 @@ export default function TodoItem(props: Props) {
           } else {
             return <span key={i}>{tag}</span>;
           }
-          return null;
         })}
         )
       </label>

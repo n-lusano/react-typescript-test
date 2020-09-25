@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Item } from "../model";
 import TodoItem from "./TodoItem";
 
 export default function TodoList() {
-  const [list, setList] = useState<Item[]>([
+  const itemsList = [
     {
       id: 0,
       text: "Make this app",
@@ -13,15 +13,37 @@ export default function TodoList() {
     },
     {
       id: 1,
-      text: "Fall in love with TypeScript",
-      tags: ["romantic", "typescript"],
+      text: "Start learning TypeScript",
+      tags: ["learn", "typescript"],
       isDone: false,
     },
-  ]);
+    {
+      id: 2,
+      text: "Hate TypeScript a bit",
+      tags: ["frustrated", "typescript"],
+      isDone: false,
+    },
+    {
+      id: 3,
+      text: "Relearn how to use React Hooks apparently",
+      tags: ["frustrated", "react"],
+      isDone: false,
+    },
+    {
+      id: 4,
+      text: "The filter finally works",
+      tags: ["excited", "react"],
+      isDone: false,
+    },
+  ];
+  const [list, setList] = useState<Item[]>(itemsList);
+  const [requiredTags, setRequiredTags] = useState<string[]>([]);
+  const [filtered, setFiltered] = useState<Boolean>(false);
+  const tags = Array.from(new Set(itemsList.map((item) => item.tags).flat()));
 
   //called by onChange in TodoItem component
   const toggle = (id: number) => {
-    const newItems = list.map((item) => {
+    const items = list.map((item) => {
       if (item.id === id) {
         return {
           ...item,
@@ -30,11 +52,42 @@ export default function TodoList() {
       }
       return item;
     });
-    setList(newItems);
+    setList(items);
   };
 
+  //a function that toggles a given tag
+  const toggleTagRequired = (tag: string) => {
+    const filteredItems = [
+      ...itemsList.filter((item) => item.tags.includes(tag)),
+    ];
+    setList(filteredItems);
+
+    const filterTag = tags.filter((filterTag) => filterTag === tag);
+    setRequiredTags(filterTag);
+
+    setFiltered(!filtered);
+  };
+
+  console.log("wtf happens onClick", requiredTags);
   return (
     <>
+      <div>
+        Tags:{" "}
+        {tags.map((tag) => {
+          return (
+            <button
+              key={tag}
+              style={{
+                fontWeight: requiredTags.includes(tag) ? "bold" : undefined,
+              }}
+              onClick={() => toggleTagRequired(tag)}
+            >
+              {tag}
+            </button>
+          );
+        })}
+      </div>
+      <br />
       {list.map((item) => {
         return (
           <TodoItem
