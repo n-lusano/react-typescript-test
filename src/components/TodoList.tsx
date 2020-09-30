@@ -1,8 +1,17 @@
 import React, { useState } from "react";
-import { Button, ButtonGroup } from "@material-ui/core";
+import { Button, List, ListItem, Divider } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { Item } from "../model";
 import TodoItem from "./TodoItem";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
 
 export default function TodoList() {
   const itemsList = [
@@ -69,6 +78,8 @@ export default function TodoList() {
     setFiltered(!filtered);
   };
 
+  const classes = useStyles();
+
   return (
     <>
       <div>
@@ -96,15 +107,22 @@ export default function TodoList() {
         </Button>
       </div>
       <br />
-      {list.map((item) => {
-        return (
-          <TodoItem
-            key={item.id}
-            item={item}
-            toggleDone={() => toggle(item.id)}
-          />
-        );
-      })}
+      <List component="nav" className={classes.root}>
+        {list.map((item) => {
+          return (
+            <div key={item.id}>
+              <ListItem button key={item.id}>
+                <TodoItem
+                  key={item.id}
+                  item={item}
+                  toggleDone={() => toggle(item.id)}
+                />
+              </ListItem>
+              <Divider key={item.text} />
+            </div>
+          );
+        })}
+      </List>
     </>
   );
 }

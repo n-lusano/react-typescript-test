@@ -1,5 +1,11 @@
 import React from "react";
 import { Item } from "../model";
+import {
+  FormControlLabel,
+  Checkbox,
+  Button,
+  ButtonGroup,
+} from "@material-ui/core";
 
 type Props = {
   // we should receive a todo item object
@@ -14,26 +20,39 @@ type Props = {
 export default function TodoItem(props: Props) {
   return (
     <div>
-      <label
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={props.item.isDone}
+            onChange={props.toggleDone}
+            name="isDoneCheckbox"
+          />
+        }
+        label={props.item.text}
         style={{
           textDecoration: props.item.isDone ? "line-through" : undefined,
         }}
+      />
+      <br />
+      <ButtonGroup
+        color="secondary"
+        size="small"
+        variant="outlined"
+        aria-label="outlined secondary button group"
+        key={props.item.id}
       >
-        <input
-          type="checkbox"
-          checked={props.item.isDone}
-          onChange={props.toggleDone}
-        />{" "}
-        {props.item.text} (
-        {props.item.tags.map((tag, i) => {
-          if (props.item.tags[i + 1]) {
-            return <span key={i}>{tag}, </span>;
-          } else {
-            return <span key={i}>{tag}</span>;
-          }
+        {props.item.tags.map((tag) => {
+          return <Button key={tag}>{tag}</Button>;
         })}
-        )
-      </label>
+      </ButtonGroup>
     </div>
   );
 }
+
+// {props.item.tags.map((tag, i) => {
+//   if (props.item.tags[i + 1]) {
+//     return <span key={i}>{tag}, </span>;
+//   } else {
+//     return <span key={i}>{tag}</span>;
+//   }
+// })}
