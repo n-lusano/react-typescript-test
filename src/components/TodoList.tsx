@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Button, ButtonGroup } from "@material-ui/core";
 
 import { Item } from "../model";
 import TodoItem from "./TodoItem";
@@ -68,14 +69,15 @@ export default function TodoList() {
     setFiltered(!filtered);
   };
 
-  console.log("wtf happens onClick", requiredTags);
   return (
     <>
       <div>
         Tags:{" "}
         {tags.map((tag) => {
           return (
-            <button
+            <Button
+              color="secondary"
+              size="small"
               key={tag}
               style={{
                 fontWeight: requiredTags.includes(tag) ? "bold" : undefined,
@@ -83,9 +85,15 @@ export default function TodoList() {
               onClick={() => toggleTagRequired(tag)}
             >
               {tag}
-            </button>
+            </Button>
           );
         })}
+        <Button
+          size="small"
+          onClick={() => (setList(itemsList), setRequiredTags([]))}
+        >
+          All
+        </Button>
       </div>
       <br />
       {list.map((item) => {
